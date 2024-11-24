@@ -1,2 +1,0 @@
-USUÁRIO: West
-SENHA: 123456
