@@ -1,38 +1,35 @@
 <?php
-// Verifica se os dados foram enviados via POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Captura os dados do formulário
+// Conectar ao banco de dados (substitua pelos seus dados de conexão)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "meu_banco";
+
+// Criando a conexão
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificando se a conexão foi bem-sucedida
+if ($conn->connect_error) {
+    die("Conexão falhou: " . $conn->connect_error);
+}
+
+// Verificando se o formulário foi enviado via POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = $_POST['nome'];
     $email = $_POST['email'];
-    $idade = $_POST['idade'];
+    $telefone = $_POST['telefone'];
 
-    // Configurações de conexão com o banco de dados
-    $servername = "localhost";  // Geralmente localhost
-    $username = "root";         // Usuário padrão do MySQL
-    $password = "";             // Senha do MySQL, se houver
-    $dbname = "meu_banco";      // Nome do banco de dados que você criou
+    // Preparando a consulta SQL para inserir os dados
+    $sql = "INSERT INTO usuarios (nome, email, telefone) VALUES ('$nome', '$email', '$telefone')";
 
-    // Cria conexão com o MySQL
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Verifica se houve erro na conexão
-    if ($conn->connect_error) {
-        die("Falha na conexão: " . $conn->connect_error);
-    }
-
-    // Prepara a consulta SQL para inserir os dados
-    $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, idade) VALUES (?, ?, ?)");
-    $stmt->bind_param("ssi", $nome, $email, $idade); // "ssi" significa que os parâmetros são: string, string, inteiro
-
-    // Executa a consulta
-    if ($stmt->execute()) {
-        echo "<h2>Dados cadastrados com sucesso!</h2>";
+    // Executando a consulta
+    if ($conn->query($sql) === TRUE) {
+        echo "Novo usuário cadastrado com sucesso!";
     } else {
-        echo "<h2>Erro ao cadastrar os dados.</h2>";
+        echo "Erro ao cadastrar o usuário: " . $conn->error;
     }
-
-    // Fecha a conexão com o banco de dados
-    $stmt->close();
-    $conn->close();
 }
+
+// Fechando a conexão
+$conn->close();
 ?>
