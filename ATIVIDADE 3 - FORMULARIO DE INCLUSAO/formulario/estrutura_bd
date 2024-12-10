@@ -1,0 +1,7 @@
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,   -- Identificador único para cada usuário
+    nome VARCHAR(100) NOT NULL,          -- Nome do usuário
+    email VARCHAR(100) NOT NULL,         -- E-mail do usuário
+    telefone VARCHAR(20),                -- Telefone do usuário
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Data de cadastro (automático)
+);
